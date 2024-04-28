@@ -81,9 +81,9 @@ func (c *Crawler) Crawl() DirResult {
 	}
 	return dirRes
 }
-func (c *Crawler) ParamCrawl() []template.JsRes {
+func (c *Crawler) ParamCrawl(ctx context.Context) []template.JsRes {
 	var sameOriginRes []template.JsRes
-	res := c.crawAllUrl([]template.JsRes{{Url: c.target, Method: "GET"}}, nil, context.Background(), c.crawl)
+	res := c.crawAllUrl([]template.JsRes{{Url: c.target, Method: "GET"}}, nil, ctx, c.crawl)
 	for _, v := range res {
 		switch v.Method {
 		case "GET":

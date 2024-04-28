@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"github.com/Kumengda/laser/crawler"
 	. "github.com/Kumengda/laser/runtime"
 )
@@ -17,7 +18,7 @@ func main() {
 		MainInsp.Print(Json(i))
 		return i
 	})
-	myCrawler.ParamCrawl()
+	myCrawler.ParamCrawl(context.Background())
 
 	//fmt.Println(len(res.ExternalLink) + len(res.ExternalStaticFileLink) + len(res.SameOriginUrl))
 }
