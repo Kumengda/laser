@@ -56,9 +56,10 @@ func (n *NativeCrawler) SingleCrawl(task template.JsRes, allHref []template.JsRe
 				isFileUpload = true
 			}
 			newFormData = append(newFormData, template.FormData{
-				Name:  vv.Name,
-				Type:  vv.Type,
-				Value: vv.Value,
+				Enctype: v.Enctype,
+				Name:    vv.Name,
+				Type:    vv.Type,
+				Value:   vv.Value,
 			})
 		}
 		if v.Action == "#" || v.Action == "/" || v.Action == "" {

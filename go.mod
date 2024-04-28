@@ -5,7 +5,7 @@ go 1.22.2
 require (
 	github.com/B9O2/Inspector v0.0.12
 	github.com/B9O2/Multitasking v0.6.6
-	github.com/Kumengda/easyChromedp v0.3.5
+	github.com/Kumengda/easyChromedp v0.3.6
 	github.com/Kumengda/pageParser v0.0.1
 	github.com/chromedp/chromedp v0.9.2
 	github.com/corpix/uarand v0.2.0
