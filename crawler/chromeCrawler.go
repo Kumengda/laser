@@ -1,6 +1,7 @@
 package crawler
 
 import (
+	"github.com/Kumengda/easyChromedp/chrome"
 	"github.com/Kumengda/easyChromedp/template"
 	"github.com/chromedp/chromedp"
 )
@@ -29,47 +30,60 @@ type DirResult struct {
 }
 
 type ChromeCrawler struct {
-	timeout       int
 	headers       map[string]interface{}
 	waitTime      int
 	printLog      bool
+	timeout       int
 	chromeThreads int
-	headless      bool
+	chrome        *chrome.Chrome
 }
 
 func NewChromeCrawler(printLog bool, waitTime int, headless bool, chromeThreads, timeout int, headers map[string]interface{}) (*ChromeCrawler, error) {
 	if headers == nil {
 		headers = make(map[string]interface{})
 	}
-	return &ChromeCrawler{
-		timeout:       timeout,
-		headers:       headers,
-		waitTime:      waitTime,
-		printLog:      printLog,
-		chromeThreads: chromeThreads,
-		headless:      headless,
-	}, nil
-}
-func (c *ChromeCrawler) GetCrawlThreads() int {
-	return c.chromeThreads
-}
-func (c *ChromeCrawler) SingleCrawl(task template.JsRes, allHref []template.JsRes) []template.JsRes {
-	templates, err := template.NewChromedpTemplates(
-		task.Url,
-		c.timeout,
-		c.printLog,
-		c.waitTime,
-		c.headers,
-		chromedp.Flag("headless", c.headless),
+	myChrome, err := chrome.NewChrome(
+		chromedp.Flag("headless", headless),
 		chromedp.Flag("ignore-certificate-errors", true),
 		chromedp.Flag("disable-dev-shm-usage", true),
 		chromedp.Flag("enable-automation", false),
 		chromedp.Flag("disable-blink-features", "AutomationControlled"),
 	)
+
+	if err != nil {
+		return nil, err
+	}
+	return &ChromeCrawler{
+		headers:       headers,
+		timeout:       timeout,
+		waitTime:      waitTime,
+		printLog:      printLog,
+		chromeThreads: chromeThreads,
+		chrome:        myChrome,
+	}, nil
+}
+func (c *ChromeCrawler) GetCrawlThreads() int {
+	return c.chromeThreads
+}
+func (c *ChromeCrawler) Close() {
+	c.chrome.Close()
+}
+func (c *ChromeCrawler) DoFinally() {
+	c.chrome.Close()
+}
+
+func (c *ChromeCrawler) SingleCrawl(task template.JsRes, allHref []template.JsRes) []template.JsRes {
+	templates, err := template.NewChromedpTemplates(
+		c.printLog,
+		c.timeout,
+		c.waitTime,
+		c.headers,
+		c.chrome,
+	)
 	if err != nil {
 		return allHref
 	}
-	allReqHref, err := templates.GetWebsiteAllReq()
+	allReqHref, err := templates.GetWebsiteAllReq(task.Url)
 	if err != nil {
 		return nil
 	}
@@ -82,7 +96,7 @@ func (c *ChromeCrawler) SingleCrawl(task template.JsRes, allHref []template.JsRe
 		})
 
 	}
-	allJsHref, err := templates.GetWebsiteAllHrefByJs()
+	allJsHref, err := templates.GetWebsiteAllHrefByJs(task.Url)
 	if err != nil {
 		return nil
 	}

@@ -10,7 +10,7 @@ import (
 
 type Crawler struct {
 	BaseCrawler
-	crawl BaseCrawl
+	crawl Crawl
 }
 
 func NewCrawler(target string, depth int, noCrawlerFilter []string) (*Crawler, error) {
@@ -27,7 +27,7 @@ func NewCrawler(target string, depth int, noCrawlerFilter []string) (*Crawler, e
 		middlewareFunc: nil,
 	}}, nil
 }
-func (c *Crawler) SetCrawler(crawler BaseCrawl) {
+func (c *Crawler) SetCrawler(crawler Crawl) {
 	c.crawl = crawler
 }
 
@@ -79,6 +79,7 @@ func (c *Crawler) Crawl() DirResult {
 
 		}
 	}
+	c.crawl.DoFinally()
 	return dirRes
 }
 func (c *Crawler) ParamCrawl(ctx context.Context) []template.JsRes {
@@ -106,5 +107,6 @@ func (c *Crawler) ParamCrawl(ctx context.Context) []template.JsRes {
 			sameOriginRes = append(sameOriginRes, v)
 		}
 	}
+	c.crawl.DoFinally()
 	return sameOriginRes
 }

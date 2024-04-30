@@ -8,8 +8,9 @@ import (
 	. "github.com/Kumengda/laser/runtime"
 )
 
-type BaseCrawl interface {
+type Crawl interface {
 	SingleCrawl(task template.JsRes, allHref []template.JsRes) []template.JsRes
+	DoFinally()
 	GetCrawlThreads() int
 }
 
@@ -27,7 +28,7 @@ func (b *BaseCrawler) SetMiddlewareFunc(middlewareFunc func(i interface{}) inter
 }
 
 // 第一次入参targets只能是一个包含一个目标的切片类型,这里第一个参数写成[]string是方便递归传参
-func (b *BaseCrawler) crawAllUrl(targets []template.JsRes, lastTargets []template.JsRes, ctx context.Context, crawl BaseCrawl) []template.JsRes {
+func (b *BaseCrawler) crawAllUrl(targets []template.JsRes, lastTargets []template.JsRes, ctx context.Context, crawl Crawl) []template.JsRes {
 	targets = targetRemoveDuplicates(targets)
 	var allHref []template.JsRes
 	if lastTargets != nil {

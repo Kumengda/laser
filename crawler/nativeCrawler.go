@@ -81,6 +81,9 @@ func (n *NativeCrawler) SingleCrawl(task template.JsRes, allHref []template.JsRe
 func (n *NativeCrawler) GetCrawlThreads() int {
 	return n.threads
 }
+func (n *NativeCrawler) DoFinally() {
+
+}
 
 func NewNativeCrawler(timeout, threads int, headers map[string]interface{}) *NativeCrawler {
 	if headers == nil {
