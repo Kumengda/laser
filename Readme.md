@@ -34,7 +34,7 @@ quick start
 ./darwin_arm64 -target https://news.sina.com.cn -file res.json
 ```
 
-![ScreenShot-2024-04-30 at 23.49.04](/Users/mengda/mydata/gocode/laser/img/ScreenShot-2024-04-30 at 23.49.04.gif)
+![](https://raw.githubusercontent.com/Kumengda/laser/main/img/ScreenShot-2024-04-30%20at%2023.49.04.gif)
 
 可以看到5s不到就完成了对于https://news.sina.com.cn 深度为2的爬取
 
@@ -50,7 +50,7 @@ same_origin_form:同源提交表单,5个
 
 External_form:外部表单,2个
 
-![ScreenShot-2024-04-30 at 23.50.08@2x](/Users/mengda/mydata/gocode/laser/img/ScreenShot-2024-04-30 at 23.50.08@2x.png)
+![](https://github.com/Kumengda/laser/blob/main/img/ScreenShot-2024-04-30%20at%2023.50.08@2x.png?raw=true)
 
 ⭕️ 如果想起用chrome进行爬取,只需要使用如下命令
 
@@ -60,8 +60,8 @@ External_form:外部表单,2个
 ./darwin_arm64 -target https://news.sina.com.cn -ec -headless
 ```
 
-![ScreenShot-2024-04-30 at 23.57.04](/Users/mengda/mydata/gocode/laser/img/ScreenShot-2024-04-30 at 23.57.04.gif)
+![](https://github.com/Kumengda/laser/blob/main/img/ScreenShot-2024-04-30%20at%2023.57.04.gif?raw=true)
 
 完整参数:
 
-![ScreenShot-2024-05-01 at 00.02.23@2x](/Users/mengda/mydata/gocode/laser/img/ScreenShot-2024-05-01 at 00.02.23@2x.png)
+![](https://github.com/Kumengda/laser/blob/main/img/ScreenShot-2024-05-01%20at%2000.02.23@2x.png?raw=true)
