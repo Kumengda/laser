@@ -2,7 +2,6 @@ package crawler
 
 import (
 	"context"
-	"github.com/B9O2/Multitasking"
 	"github.com/Kumengda/easyChromedp/template"
 	. "github.com/Kumengda/laser/runtime"
 	"strings"
@@ -35,48 +34,28 @@ func (c *Crawler) Crawl() DirResult {
 	var dirRes DirResult
 	dirRes.Target = c.target
 	res := c.crawAllUrl([]template.JsRes{{Url: c.target, Method: "GET"}}, nil, context.Background(), c.crawl)
-	myMT := Multitasking.NewMultitasking("urlCheck", nil)
-	myMT.Register(func(dc Multitasking.DistributeController) {
-		for _, v := range res {
-			parse, err := getHost(v.Url)
-			if err != nil {
+	for _, v := range res {
+		parse, err := getHost(v.Url)
+		if err != nil {
+			continue
+		}
+		if v.IsForm {
+			if parse == c.host {
+				dirRes.SameOriginForm = append(dirRes.SameOriginForm, v)
+			} else {
+				dirRes.ExternalForm = append(dirRes.ExternalForm, v)
+			}
+			continue
+		}
+
+		if parse == c.host {
+			dirRes.SameOriginUrl = append(dirRes.SameOriginUrl, SameOriginUrl{BaseUrl{Url: v.Url}})
+		} else {
+			if staticCheck(v.Url) {
+				dirRes.ExternalStaticFileLink = append(dirRes.ExternalStaticFileLink, ExternalStaticFileLink{BaseUrl: BaseUrl{Url: v.Url}})
 				continue
 			}
-			if parse == c.host {
-				dc.AddTask(SameOriginUrl{BaseUrl{Url: v.Url}})
-			} else {
-				if staticCheck(v.Url) {
-					dc.AddTask(ExternalStaticFileLink{BaseUrl: BaseUrl{Url: v.Url}})
-					continue
-				}
-				dc.AddTask(ExternalLink{BaseUrl: BaseUrl{Url: v.Url}})
-			}
-		}
-	}, func(ec Multitasking.ExecuteController, i interface{}) interface{} {
-		if c.middlewareFunc != nil {
-			midres := c.middlewareFunc(i)
-			if midres != nil {
-				return midres
-			}
-		}
-		return i
-	})
-
-	runRes, err := myMT.Run(context.Background(), 50)
-	if err != nil {
-		return dirRes
-	}
-	for _, v := range runRes {
-		if v != nil {
-			switch v.(type) {
-			case SameOriginUrl:
-				dirRes.SameOriginUrl = append(dirRes.SameOriginUrl, v.(SameOriginUrl))
-			case ExternalLink:
-				dirRes.ExternalLink = append(dirRes.ExternalLink, v.(ExternalLink))
-			case ExternalStaticFileLink:
-				dirRes.ExternalStaticFileLink = append(dirRes.ExternalStaticFileLink, v.(ExternalStaticFileLink))
-			}
-
+			dirRes.ExternalLink = append(dirRes.ExternalLink, ExternalLink{BaseUrl: BaseUrl{Url: v.Url}})
 		}
 	}
 	c.crawl.DoFinally()

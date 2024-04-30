@@ -27,6 +27,8 @@ type DirResult struct {
 	SameOriginUrl          []SameOriginUrl          `json:"same_originUrl"`
 	ExternalLink           []ExternalLink           `json:"external_link"`
 	ExternalStaticFileLink []ExternalStaticFileLink `json:"external_static_file_link"`
+	SameOriginForm         []template.JsRes         `json:"same_origin_form"`
+	ExternalForm           []template.JsRes         `json:"external_form"`
 }
 
 type ChromeCrawler struct {

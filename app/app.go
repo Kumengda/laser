@@ -1,7 +1,6 @@
 package app
 
 import (
-	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/B9O2/tabby"
@@ -93,7 +92,7 @@ func (m MainApp) Main(arguments tabby.Arguments) (*tabby.TabbyContainer, error) 
 		}
 		return i
 	})
-	res := myCrawler.ParamCrawl(context.Background())
+	res := myCrawler.Crawl()
 	if filename != "" {
 		jsonData, _ := json.Marshal(res)
 		os.WriteFile(filename, jsonData, 0644)

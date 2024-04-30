@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	myCrawler, _ := crawler.NewCrawler("http://127.0.0.1:8765/",
+	myCrawler, _ := crawler.NewCrawler("https://news.sina.com.cn",
 		2,
 		[]string{},
 	)
@@ -15,10 +15,9 @@ func main() {
 	nativeCrawler := crawler.NewNativeCrawler(10, 10, nil)
 	myCrawler.SetCrawler(nativeCrawler)
 	myCrawler.SetMiddlewareFunc(func(i interface{}) interface{} {
-		MainInsp.Print(Json(i))
 		return i
 	})
-	myCrawler.ParamCrawl(context.Background())
-
+	res := myCrawler.ParamCrawl(context.Background())
+	MainInsp.Print(Json(res))
 	//fmt.Println(len(res.ExternalLink) + len(res.ExternalStaticFileLink) + len(res.SameOriginUrl))
 }
