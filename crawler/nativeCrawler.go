@@ -15,10 +15,13 @@ type NativeCrawler struct {
 }
 
 func (n *NativeCrawler) SingleCrawl(task template.JsRes, allHref []template.JsRes) []template.JsRes {
-	resp, err, _ := http.Get(task.Url, n.headers, n.timeout)
+	var resp []byte
+	var err error
+	resp, err, _ = http.Get(task.Url, n.headers, n.timeout)
 	if err != nil {
 		return nil
 	}
+
 	parse, err := url.Parse(task.Url)
 	if err != nil {
 		return nil

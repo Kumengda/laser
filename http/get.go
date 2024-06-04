@@ -12,6 +12,7 @@ func Get(url string, headers map[string]interface{}, timeout int) ([]byte, error
 	client := &http.Client{
 		Timeout: time.Duration(timeout) * time.Second,
 	}
+
 	req, _ := http.NewRequest("GET", url, nil)
 	for k, v := range headers {
 		req.Header.Set(k, v.(string))

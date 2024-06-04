@@ -7,7 +7,8 @@ import (
 )
 
 func main() {
-	myCrawler, _ := crawler.NewCrawler("https://news.sina.com.cn",
+
+	myCrawler, _ := crawler.NewCrawler("https://www.kanguowai.com/index.html",
 		2,
 		[]string{},
 	)
